@@ -1,5 +1,5 @@
 /** Type declaration for ambient System. */
-declare const System: any;
+declare var System: any;
 
 // Apply the CLI SystemJS configuration.
 System.config({

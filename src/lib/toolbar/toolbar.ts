@@ -9,14 +9,11 @@ import {
   ElementRef,
   Renderer
 } from '@angular/core';
-import {CompatibilityModule} from '../core';
+import {DefaultStyleCompatibilityModeModule} from '../core';
 
 
 @Directive({
-  selector: 'md-toolbar-row, mat-toolbar-row',
-  host: {
-    '[class.mat-toolbar-row]': 'true',
-  },
+  selector: 'md-toolbar-row, mat-toolbar-row'
 })
 export class MdToolbarRow {}
 
@@ -25,10 +22,6 @@ export class MdToolbarRow {}
   selector: 'md-toolbar, mat-toolbar',
   templateUrl: 'toolbar.html',
   styleUrls: ['toolbar.css'],
-  host: {
-    '[class.mat-toolbar]': 'true',
-    'role': 'toolbar'
-  },
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
@@ -56,7 +49,7 @@ export class MdToolbar {
 
   private _setElementColor(color: string, isAdd: boolean) {
     if (color != null && color != '') {
-      this.renderer.setElementClass(this.elementRef.nativeElement, `mat-${color}`, isAdd);
+      this.renderer.setElementClass(this.elementRef.nativeElement, `md-${color}`, isAdd);
     }
   }
 
@@ -64,8 +57,8 @@ export class MdToolbar {
 
 
 @NgModule({
-  imports: [CompatibilityModule],
-  exports: [MdToolbar, MdToolbarRow, CompatibilityModule],
+  imports: [DefaultStyleCompatibilityModeModule],
+  exports: [MdToolbar, MdToolbarRow, DefaultStyleCompatibilityModeModule],
   declarations: [MdToolbar, MdToolbarRow],
 })
 export class MdToolbarModule {

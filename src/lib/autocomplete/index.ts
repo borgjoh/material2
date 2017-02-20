@@ -1,15 +1,17 @@
 import {ModuleWithProviders, NgModule} from '@angular/core';
-
-import {MdOptionModule, OverlayModule, OVERLAY_PROVIDERS, CompatibilityModule} from '../core';
-import {CommonModule} from '@angular/common';
+import {
+  MdOptionModule, OverlayModule, OVERLAY_PROVIDERS, DefaultStyleCompatibilityModeModule
+} from '../core';
 import {MdAutocomplete} from './autocomplete';
 import {MdAutocompleteTrigger} from './autocomplete-trigger';
 export * from './autocomplete';
 export * from './autocomplete-trigger';
 
 @NgModule({
-  imports: [MdOptionModule, OverlayModule, CompatibilityModule, CommonModule],
-  exports: [MdAutocomplete, MdOptionModule, MdAutocompleteTrigger, CompatibilityModule],
+  imports: [MdOptionModule, OverlayModule, DefaultStyleCompatibilityModeModule],
+  exports: [
+      MdAutocomplete, MdOptionModule, MdAutocompleteTrigger, DefaultStyleCompatibilityModeModule
+  ],
   declarations: [MdAutocomplete, MdAutocompleteTrigger],
 })
 export class MdAutocompleteModule {

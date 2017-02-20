@@ -5,7 +5,7 @@ import {
     ElementRef,
     QueryList
 } from '@angular/core';
-import {CompatibilityModule} from '../compatibility/compatibility';
+import {DefaultStyleCompatibilityModeModule} from '../compatibility/default-mode';
 
 
 /**
@@ -13,12 +13,7 @@ import {CompatibilityModule} from '../compatibility/compatibility';
  * Line elements can be extracted with a @ContentChildren(MdLine) query, then
  * counted by checking the query list's length.
  */
-@Directive({
-  selector: '[md-line], [mat-line]',
-  host: {
-    '[class.mat-line]': 'true'
-  }
-})
+@Directive({ selector: '[md-line], [mat-line]' })
 export class MdLine {}
 
 /**
@@ -38,16 +33,16 @@ export class MdLineSetter {
   private _setLineClass(count: number): void {
     this._resetClasses();
     if (count === 2 || count === 3) {
-      this._setClass(`mat-${count}-line`, true);
+      this._setClass(`md-${count}-line`, true);
     } else if (count > 3) {
-      this._setClass(`mat-multi-line`, true);
+      this._setClass(`md-multi-line`, true);
     }
   }
 
   private _resetClasses(): void {
-    this._setClass('mat-2-line', false);
-    this._setClass('mat-3-line', false);
-    this._setClass('mat-multi-line', false);
+    this._setClass('md-2-line', false);
+    this._setClass('md-3-line', false);
+    this._setClass('md-multi-line', false);
   }
 
   private _setClass(className: string, bool: boolean): void {
@@ -57,8 +52,8 @@ export class MdLineSetter {
 }
 
 @NgModule({
-  imports: [CompatibilityModule],
-  exports: [MdLine, CompatibilityModule],
+  imports: [DefaultStyleCompatibilityModeModule],
+  exports: [MdLine, DefaultStyleCompatibilityModeModule],
   declarations: [MdLine],
 })
 export class MdLineModule { }

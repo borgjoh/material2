@@ -49,7 +49,8 @@ describe('MdTabNavBar', () => {
     let fixture: ComponentFixture<TabLinkWithNgIf> = TestBed.createComponent(TabLinkWithNgIf);
     fixture.detectChanges();
 
-    let link = fixture.debugElement.nativeElement.querySelector('.mat-tab-link');
+    let link = fixture.debugElement.nativeElement.querySelector('[md-tab-link]');
+    let rippleBackground = link.querySelector('.md-ripple-background');
     let mouseEvent = document.createEvent('MouseEvents');
 
     fixture.componentInstance.isDestroyed = true;
@@ -60,8 +61,7 @@ describe('MdTabNavBar', () => {
 
     link.dispatchEvent(mouseEvent);
 
-    expect(link.querySelector('.mat-ripple-element'))
-      .toBeFalsy('Expected no ripple to be created when ripple target is destroyed.');
+    expect(rippleBackground.classList).not.toContain('md-ripple-active');
   });
 });
 

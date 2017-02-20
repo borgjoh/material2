@@ -8,9 +8,9 @@ import {
   Input,
   ElementRef,
   NgZone,
-  Renderer, Directive
+  Renderer
 } from '@angular/core';
-import {CompatibilityModule} from '../core';
+import {DefaultStyleCompatibilityModeModule} from '../core';
 
 
 // TODO(josephperrott): Benchpress tests.
@@ -31,31 +31,7 @@ const MAX_ANGLE = 359.99 / 100;
 export type ProgressSpinnerMode = 'determinate' | 'indeterminate';
 
 type EasingFn = (currentTime: number, startValue: number,
-                 changeInValue: number, duration: number) => number;
-
-
-/**
- * Directive whose purpose is to add the mat- CSS styling to this selector.
- */
-@Directive({
-  selector: 'md-progress-spinner, mat-progress-spinner',
-  host: {
-    '[class.mat-progress-spinner]': 'true'
-  }
-})
-export class MdProgressSpinnerCssMatStyler {}
-
-
-/**
- * Directive whose purpose is to add the mat- CSS styling to this selector.
- */
-@Directive({
-  selector: 'md-progress-circle, mat-progress-circle',
-  host: {
-    '[class.mat-progress-circle]': 'true'
-  }
-})
-export class MdProgressCircleCssMatStyler {}
+                 changeInValue: number, duration: number) => number
 
 
 /**
@@ -271,7 +247,7 @@ export class MdProgressSpinner implements OnDestroy {
   /** Sets the given palette class on the component element. */
   private _setElementColor(color: string, isAdd: boolean) {
     if (color != null && color != '') {
-      this._renderer.setElementClass(this._elementRef.nativeElement, `mat-${color}`, isAdd);
+      this._renderer.setElementClass(this._elementRef.nativeElement, `md-${color}`, isAdd);
     }
   }
 }
@@ -289,8 +265,9 @@ export class MdProgressSpinner implements OnDestroy {
   host: {
     'role': 'progressbar',
     'mode': 'indeterminate',
-    '[class.mat-spinner]': 'true',
   },
+  // Due to the class extending we need to explicitly say that the input exists.
+  inputs: ['color'],
   templateUrl: 'progress-spinner.html',
   styleUrls: ['progress-spinner.css'],
 })
@@ -385,20 +362,9 @@ function getSvgArc(currentValue: number, rotation: number) {
 
 
 @NgModule({
-  imports: [CompatibilityModule],
-  exports: [
-    MdProgressSpinner,
-    MdSpinner,
-    CompatibilityModule,
-    MdProgressSpinnerCssMatStyler,
-    MdProgressCircleCssMatStyler
-  ],
-  declarations: [
-    MdProgressSpinner,
-    MdSpinner,
-    MdProgressSpinnerCssMatStyler,
-    MdProgressCircleCssMatStyler
-  ],
+  imports: [DefaultStyleCompatibilityModeModule],
+  exports: [MdProgressSpinner, MdSpinner, DefaultStyleCompatibilityModeModule],
+  declarations: [MdProgressSpinner, MdSpinner],
 })
 export class MdProgressSpinnerModule {
   /** @deprecated */

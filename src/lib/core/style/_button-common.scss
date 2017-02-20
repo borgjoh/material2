@@ -1,5 +1,5 @@
 // Mixin overriding default button styles like the gray background, the border, and the outline.
-@mixin mat-button-reset {
+@mixin md-button-reset {
   cursor: pointer;
   user-select: none;
   outline: none;

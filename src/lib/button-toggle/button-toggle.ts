@@ -23,8 +23,8 @@ import {Observable} from 'rxjs/Observable';
 import {
   UniqueSelectionDispatcher,
   coerceBooleanProperty,
+  DefaultStyleCompatibilityModeModule,
   UNIQUE_SELECTION_DISPATCHER_PROVIDER,
-  CompatibilityModule,
 } from '../core';
 
 /** Acceptable types for a button toggle. */
@@ -53,12 +53,11 @@ export class MdButtonToggleChange {
 
 /** Exclusive selection button toggle group that behaves like a radio-button group. */
 @Directive({
-  selector: 'md-button-toggle-group:not([multiple]), mat-button-toggle-group:not([multiple])',
+  selector: 'md-button-toggle-group:not([multiple])',
   providers: [MD_BUTTON_TOGGLE_GROUP_VALUE_ACCESSOR],
   host: {
-    '[class.mat-button-toggle-group]': 'true',
     'role': 'radiogroup',
-    '[class.mat-button-toggle-vertical]': 'vertical'
+    '[class.md-button-toggle-vertical]': 'vertical'
   },
   exportAs: 'mdButtonToggleGroup',
 })
@@ -67,7 +66,7 @@ export class MdButtonToggleGroup implements AfterViewInit, ControlValueAccessor 
   private _value: any = null;
 
   /** The HTML name attribute applied to toggles in this group. */
-  private _name: string = `md-button-toggle-group-${_uniqueIdCounter++}`;
+  private _name: string = `md-radio-group-${_uniqueIdCounter++}`;
 
   /** Disables all toggles in the group. */
   private _disabled: boolean = null;
@@ -243,11 +242,10 @@ export class MdButtonToggleGroup implements AfterViewInit, ControlValueAccessor 
 
 /** Multiple selection button-toggle group. `ngModel` is not supported in this mode. */
 @Directive({
-  selector: 'md-button-toggle-group[multiple], mat-button-toggle-group[multiple]',
+  selector: 'md-button-toggle-group[multiple]',
   exportAs: 'mdButtonToggleGroup',
   host: {
-    '[class.mat-button-toggle-group]': 'true',
-    '[class.mat-button-toggle-vertical]': 'vertical'
+    '[class.md-button-toggle-vertical]': 'vertical'
   }
 })
 export class MdButtonToggleGroupMultiple {
@@ -282,13 +280,10 @@ export class MdButtonToggleGroupMultiple {
 /** Single button inside of a toggle group. */
 @Component({
   moduleId: module.id,
-  selector: 'md-button-toggle, mat-button-toggle',
+  selector: 'md-button-toggle',
   templateUrl: 'button-toggle.html',
   styleUrls: ['button-toggle.css'],
   encapsulation: ViewEncapsulation.None,
-  host: {
-    '[class.mat-button-toggle]': 'true'
-  }
 })
 export class MdButtonToggle implements OnInit {
   /** Whether or not this button toggle is checked. */
@@ -371,7 +366,7 @@ export class MdButtonToggle implements OnInit {
   }
 
   /** Whether the button is checked. */
-  @HostBinding('class.mat-button-toggle-checked')
+  @HostBinding('class.md-button-toggle-checked')
   @Input()
   get checked(): boolean {
     return this._checked;
@@ -416,7 +411,7 @@ export class MdButtonToggle implements OnInit {
   }
 
   /** Whether the button is disabled. */
-  @HostBinding('class.mat-button-toggle-disabled')
+  @HostBinding('class.md-button-toggle-disabled')
   @Input()
   get disabled(): boolean {
     return this._disabled || (this.buttonToggleGroup != null && this.buttonToggleGroup.disabled) ||
@@ -469,12 +464,12 @@ export class MdButtonToggle implements OnInit {
 
 
 @NgModule({
-  imports: [FormsModule, CompatibilityModule],
+  imports: [FormsModule, DefaultStyleCompatibilityModeModule],
   exports: [
     MdButtonToggleGroup,
     MdButtonToggleGroupMultiple,
     MdButtonToggle,
-    CompatibilityModule,
+    DefaultStyleCompatibilityModeModule,
   ],
   declarations: [MdButtonToggleGroup, MdButtonToggleGroupMultiple, MdButtonToggle],
   providers: [UNIQUE_SELECTION_DISPATCHER_PROVIDER]

@@ -11,7 +11,7 @@ import {
     NgModule,
     ModuleWithProviders,
 } from '@angular/core';
-import {MdLine, MdLineSetter, MdLineModule, CompatibilityModule} from '../core';
+import {MdLine, MdLineSetter, MdLineModule, DefaultStyleCompatibilityModeModule} from '../core';
 
 @Directive({
   selector: 'md-divider, mat-divider'
@@ -21,75 +21,16 @@ export class MdListDivider {}
 @Component({
   moduleId: module.id,
   selector: 'md-list, mat-list, md-nav-list, mat-nav-list',
-  host: {
-    'role': 'list'},
+  host: {'role': 'list'},
   template: '<ng-content></ng-content>',
   styleUrls: ['list.css'],
   encapsulation: ViewEncapsulation.None
 })
 export class MdList {}
 
-/**
- * Directive whose purpose is to add the mat- CSS styling to this selector.
- */
-@Directive({
-  selector: 'md-list, mat-list',
-  host: {
-    '[class.mat-list]': 'true'
-  }
-})
-export class MdListCssMatStyler {}
-
-/**
- * Directive whose purpose is to add the mat- CSS styling to this selector.
- */
-@Directive({
-  selector: 'md-nav-list, mat-nav-list',
-  host: {
-    '[class.mat-nav-list]': 'true'
-  }
-})
-export class MdNavListCssMatStyler {}
-
-/**
- * Directive whose purpose is to add the mat- CSS styling to this selector.
- */
-@Directive({
-  selector: 'md-divider, mat-divider',
-  host: {
-    '[class.mat-divider]': 'true'
-  }
-})
-export class MdDividerCssMatStyler {}
-
 /* Need directive for a ContentChild query in list-item */
-@Directive({
-  selector: '[md-list-avatar], [mat-list-avatar]',
-  host: {
-    '[class.mat-list-avatar]': 'true'
-  }
-})
-export class MdListAvatarCssMatStyler {}
-
-/* Need directive to add mat- CSS styling */
-@Directive({
-  selector: '[md-list-icon], [mat-list-icon]',
-  host: {
-    '[class.mat-list-icon]': 'true'
-  }
-})
-export class MdListIconCssMatStyler {}
-
-/**
- * Directive whose purpose is to add the mat- CSS styling to this selector.
- */
-@Directive({
-  selector: '[md-subheader], [mat-subheader]',
-  host: {
-    '[class.mat-subheader]': 'true'
-  }
-})
-export class MdListSubheaderCssMatStyler {}
+@Directive({ selector: '[md-list-avatar], [mat-list-avatar]' })
+export class MdListAvatar {}
 
 @Component({
   moduleId: module.id,
@@ -98,7 +39,6 @@ export class MdListSubheaderCssMatStyler {}
     'role': 'listitem',
     '(focus)': '_handleFocus()',
     '(blur)': '_handleBlur()',
-    '[class.mat-list-item]': 'true',
   },
   templateUrl: 'list-item.html',
   encapsulation: ViewEncapsulation.None
@@ -110,10 +50,9 @@ export class MdListItem implements AfterContentInit {
 
   @ContentChildren(MdLine) _lines: QueryList<MdLine>;
 
-  @ContentChild(MdListAvatarCssMatStyler)
-  set _hasAvatar(avatar: MdListAvatarCssMatStyler) {
-    this._renderer.setElementClass(
-        this._element.nativeElement, 'mat-list-item-avatar', avatar != null);
+  @ContentChild(MdListAvatar)
+  set _hasAvatar(avatar: MdListAvatar) {
+    this._renderer.setElementClass(this._element.nativeElement, 'md-list-avatar', avatar != null);
   }
 
   constructor(private _renderer: Renderer, private _element: ElementRef) {}
@@ -133,31 +72,16 @@ export class MdListItem implements AfterContentInit {
 
 
 @NgModule({
-  imports: [MdLineModule, CompatibilityModule],
+  imports: [MdLineModule, DefaultStyleCompatibilityModeModule],
   exports: [
     MdList,
     MdListItem,
     MdListDivider,
-    MdListAvatarCssMatStyler,
+    MdListAvatar,
     MdLineModule,
-    CompatibilityModule,
-    MdListIconCssMatStyler,
-    MdListCssMatStyler,
-    MdNavListCssMatStyler,
-    MdDividerCssMatStyler,
-    MdListSubheaderCssMatStyler
+    DefaultStyleCompatibilityModeModule,
   ],
-  declarations: [
-    MdList,
-    MdListItem,
-    MdListDivider,
-    MdListAvatarCssMatStyler,
-    MdListIconCssMatStyler,
-    MdListCssMatStyler,
-    MdNavListCssMatStyler,
-    MdDividerCssMatStyler,
-    MdListSubheaderCssMatStyler
-  ],
+  declarations: [MdList, MdListItem, MdListDivider, MdListAvatar],
 })
 export class MdListModule {
   /** @deprecated */

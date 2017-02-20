@@ -5,9 +5,9 @@
  * This mixin contains shared option styles between the select and
  * autocomplete components.
  */
-@mixin mat-option() {
-  .mat-option {
-    @include mat-menu-item-base();
+@mixin md-option() {
+  md-option {
+    @include md-menu-item-base();
     position: relative;
     cursor: pointer;
     outline: none;
@@ -18,7 +18,7 @@
     }
   }
 
-  .mat-option-ripple {
+  .md-option-ripple {
     position: absolute;
     top: 0;
     left: 0;

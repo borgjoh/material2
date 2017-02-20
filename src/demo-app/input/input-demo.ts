@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {FormControl, Validators} from '@angular/forms';
 
 
 let max = 5;
@@ -11,11 +10,9 @@ let max = 5;
   styleUrls: ['input-demo.css'],
 })
 export class InputDemo {
-  floatingLabel: string = 'auto';
   dividerColor: boolean;
   requiredField: boolean;
-  ctrlDisabled = false;
-
+  floatingLabel: boolean;
   name: string;
   items: any[] = [
     { value: 10 },
@@ -25,8 +22,6 @@ export class InputDemo {
     { value: 50 },
   ];
   rows = 8;
-  formControl = new FormControl('hello', Validators.required);
-  model = 'hello';
 
   addABunch(n: number) {
     for (let x = 0; x < n; x++) {

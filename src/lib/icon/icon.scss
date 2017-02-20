@@ -2,12 +2,12 @@
 
 
 // The width/height of the icon element.
-$mat-icon-size: 24px !default;
+$md-icon-size: 24px !default;
 
-.mat-icon {
+md-icon {
   background-repeat: no-repeat;
   display: inline-block;
   fill: currentColor;
-  height: $mat-icon-size;
-  width: $mat-icon-size;
+  height: $md-icon-size;
+  width: $md-icon-size;
 }

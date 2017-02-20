@@ -13,16 +13,14 @@ import {
   EventEmitter,
   Renderer,
   ViewEncapsulation,
-  ViewChild,
-  NgZone
+  ViewChild
 } from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {Dir, MdError, coerceBooleanProperty, CompatibilityModule} from '../core';
+import {Dir, MdError, coerceBooleanProperty, DefaultStyleCompatibilityModeModule} from '../core';
 import {A11yModule} from '../core/a11y/index';
 import {FocusTrap} from '../core/a11y/focus-trap';
 import {ESCAPE} from '../core/keyboard/keycodes';
 import {OverlayModule} from '../core/overlay/overlay-directives';
-import 'rxjs/add/operator/first';
 
 
 /** Exception thrown when two MdSidenav are matching the same side. */
@@ -52,20 +50,19 @@ export class MdSidenavToggleResult {
   // TODO(mmalerba): move template to separate file.
   templateUrl: 'sidenav.html',
   host: {
-    '[class.mat-sidenav]': 'true',
     '(transitionend)': '_onTransitionEnd($event)',
     '(keydown)': 'handleKeydown($event)',
     // must prevent the browser from aligning text based on value
     '[attr.align]': 'null',
-    '[class.mat-sidenav-closed]': '_isClosed',
-    '[class.mat-sidenav-closing]': '_isClosing',
-    '[class.mat-sidenav-end]': '_isEnd',
-    '[class.mat-sidenav-opened]': '_isOpened',
-    '[class.mat-sidenav-opening]': '_isOpening',
-    '[class.mat-sidenav-over]': '_modeOver',
-    '[class.mat-sidenav-push]': '_modePush',
-    '[class.mat-sidenav-side]': '_modeSide',
-    '[class.mat-sidenav-invalid]': '!valid',
+    '[class.md-sidenav-closed]': '_isClosed',
+    '[class.md-sidenav-closing]': '_isClosing',
+    '[class.md-sidenav-end]': '_isEnd',
+    '[class.md-sidenav-opened]': '_isOpened',
+    '[class.md-sidenav-opening]': '_isOpening',
+    '[class.md-sidenav-over]': '_modeOver',
+    '[class.md-sidenav-push]': '_modePush',
+    '[class.md-sidenav-side]': '_modeSide',
+    '[class.md-sidenav-invalid]': '!valid',
     'tabIndex': '-1'
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -322,8 +319,7 @@ export class MdSidenav implements AfterContentInit {
     'sidenav-transitions.css',
   ],
   host: {
-    '[class.mat-sidenav-container]': 'true',
-    '[class.mat-sidenav-transition]': '_enableTransitions',
+    'class': 'md-sidenav-container',
   },
   encapsulation: ViewEncapsulation.None,
 })
@@ -352,11 +348,8 @@ export class MdSidenavContainer implements AfterContentInit {
   private _left: MdSidenav;
   private _right: MdSidenav;
 
-  /** Whether to enable open/close trantions. */
-  _enableTransitions = false;
-
   constructor(@Optional() private _dir: Dir, private _element: ElementRef,
-              private _renderer: Renderer, private _ngZone: NgZone) {
+              private _renderer: Renderer) {
     // If a `Dir` directive exists up the tree, listen direction changes and update the left/right
     // properties to point to the proper start/end.
     if (_dir != null) {
@@ -372,9 +365,6 @@ export class MdSidenavContainer implements AfterContentInit {
       this._watchSidenavAlign(sidenav);
     });
     this._validateDrawers();
-
-    // Give the view a chance to render the initial state, then enable transitions.
-    this._ngZone.onMicrotaskEmpty.first().subscribe(() => this._enableTransitions = true);
   }
 
   /**
@@ -397,9 +387,9 @@ export class MdSidenavContainer implements AfterContentInit {
     sidenav.onAlignChanged.subscribe(() => this._validateDrawers());
   }
 
-  /** Toggles the 'mat-sidenav-opened' class on the main 'md-sidenav-container' element. */
+  /** Toggles the 'md-sidenav-opened' class on the main 'md-sidenav-container' element. */
   private _setContainerClass(sidenav: MdSidenav, bool: boolean): void {
-    this._renderer.setElementClass(this._element.nativeElement, 'mat-sidenav-opened', bool);
+    this._renderer.setElementClass(this._element.nativeElement, 'md-sidenav-opened', bool);
   }
 
   /** Sets the valid state of the drawers. */
@@ -520,8 +510,8 @@ export class MdSidenavContainer implements AfterContentInit {
 
 
 @NgModule({
-  imports: [CommonModule, CompatibilityModule, A11yModule, OverlayModule],
-  exports: [MdSidenavContainer, MdSidenav, CompatibilityModule],
+  imports: [CommonModule, DefaultStyleCompatibilityModeModule, A11yModule, OverlayModule],
+  exports: [MdSidenavContainer, MdSidenav, DefaultStyleCompatibilityModeModule],
   declarations: [MdSidenavContainer, MdSidenav],
 })
 export class MdSidenavModule {

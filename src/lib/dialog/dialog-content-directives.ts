@@ -9,8 +9,7 @@ import {MdDialogRef} from './dialog-ref';
   selector: 'button[md-dialog-close], button[mat-dialog-close]',
   host: {
     '(click)': 'dialogRef.close()',
-    '[attr.aria-label]': 'ariaLabel',
-    'type': 'button', // Prevents accidental form submits.
+    '[attr.aria-label]': 'ariaLabel'
   }
 })
 export class MdDialogClose {
@@ -24,10 +23,7 @@ export class MdDialogClose {
  * Title of a dialog element. Stays fixed to the top of the dialog when scrolling.
  */
 @Directive({
-  selector: '[md-dialog-title], [mat-dialog-title]',
-  host: {
-    '[class.mat-dialog-title]': 'true'
-  }
+  selector: '[md-dialog-title], [mat-dialog-title]'
 })
 export class MdDialogTitle { }
 
@@ -36,10 +32,7 @@ export class MdDialogTitle { }
  * Scrollable content container of a dialog.
  */
 @Directive({
-  selector: '[md-dialog-content], md-dialog-content, [mat-dialog-content], mat-dialog-content',
-  host: {
-    '[class.mat-dialog-content]': 'true'
-  }
+  selector: '[md-dialog-content], md-dialog-content, [mat-dialog-content], mat-dialog-content'
 })
 export class MdDialogContent { }
 
@@ -49,9 +42,6 @@ export class MdDialogContent { }
  * Stays fixed to the bottom when scrolling.
  */
 @Directive({
-  selector: '[md-dialog-actions], md-dialog-actions, [mat-dialog-actions], mat-dialog-actions',
-  host: {
-    '[class.mat-dialog-actions]': 'true'
-  }
+  selector: '[md-dialog-actions], md-dialog-actions, [mat-dialog-actions], mat-dialog-actions'
 })
 export class MdDialogActions { }

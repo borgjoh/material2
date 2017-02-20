@@ -1,8 +1,9 @@
 import * as fs from 'fs';
+import * as gulp from 'gulp';
 import * as path from 'path';
 import {browser} from 'protractor';
 
-const OUTPUT_DIR = './screenshots/';
+const OUTPUT_DIR = '/tmp/angular-material2-build/screenshots/';
 
 let currentJasmineSpecName = '';
 
@@ -34,8 +35,8 @@ export class Screenshot {
     return path.resolve(OUTPUT_DIR, this.filename);
   }
 
-  constructor(id?: string) {
-    this.id = id ? `${currentJasmineSpecName} ${id}` : currentJasmineSpecName;
+  constructor(id: string) {
+    this.id = `${currentJasmineSpecName} ${id}`;
     browser.takeScreenshot().then(png => this.storeScreenshot(png));
   }
 
@@ -51,8 +52,6 @@ export class Screenshot {
   }
 }
 
-export function screenshot(id?: string) {
-  if (process.env['TRAVIS']) {
-    return new Screenshot(id);
-  }
+export function screenshot(id: string) {
+  return new Screenshot(id);
 }

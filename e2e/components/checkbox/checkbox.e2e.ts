@@ -1,4 +1,4 @@
-import {browser, by, element, Key, ExpectedConditions} from 'protractor';
+import {browser, by, element, Key} from 'protractor';
 import {screenshot} from '../../screenshot';
 
 describe('checkbox', function () {
@@ -17,18 +17,14 @@ describe('checkbox', function () {
       checkboxEl.click();
       inputEl.getAttribute('checked').then((value: string) => {
         expect(value).toBeTruthy('Expect checkbox "checked" property to be true');
-        browser.wait(ExpectedConditions.not(
-          ExpectedConditions.presenceOf(element(by.css('div.mat-ripple-element')))))
-          .then(() => screenshot('checked'));
       });
+      screenshot('checked');
 
       checkboxEl.click();
       inputEl.getAttribute('checked').then((value: string) => {
         expect(value).toBeFalsy('Expect checkbox "checked" property to be false');
-        browser.wait(ExpectedConditions.not(
-          ExpectedConditions.presenceOf(element(by.css('div.mat-ripple-element')))))
-          .then(() => screenshot('unchecked'));
       });
+      screenshot('unchecked');
     });
 
     it('should toggle the checkbox when pressing space', () => {
@@ -36,13 +32,16 @@ describe('checkbox', function () {
 
       inputEl.getAttribute('checked').then((value: string) => {
         expect(value).toBeFalsy('Expect checkbox "checked" property to be false');
+        screenshot('start');
       });
 
       inputEl.sendKeys(Key.SPACE);
 
       inputEl.getAttribute('checked').then((value: string) => {
         expect(value).toBeTruthy('Expect checkbox "checked" property to be true');
+        screenshot('pressed space');
       });
     });
+
   });
 });

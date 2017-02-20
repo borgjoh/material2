@@ -1,23 +1,23 @@
 .chips-demo {
-  .mat-chip-list-stacked {
+  .md-chip-list-stacked {
     display: block;
     max-width: 200px;
   }
 
-  .mat-card {
+  md-card {
     padding: 0;
     margin: 16px;
 
-    & .mat-toolbar {
+    & md-toolbar {
       margin: 0;
     }
 
-    & .mat-card-content {
+    & md-card-content {
       padding: 24px;
     }
   }
 
-  .mat-basic-chip {
+  .md-basic-chip {
     margin: auto 10px;
   }
 }

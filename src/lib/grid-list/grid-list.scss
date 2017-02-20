@@ -2,27 +2,27 @@
 
 
 // height of tile header or footer if it has one line
-$mat-grid-list-one-line-height: 48px;
+$md-grid-list-one-line-height: 48px;
 // height of tile header or footer if it has two lines
-$mat-grid-list-two-line-height: 68px;
+$md-grid-list-two-line-height: 68px;
 // side padding for text in tile headers and footers
-$mat-grid-list-text-padding: 16px;
+$md-grid-list-text-padding: 16px;
 
 // font styles for text in tile headers and footers
-$mat-grid-list-font-size: 16px;
-$mat-grid-list-secondary-font: 12px;
+$md-grid-list-font-size: 16px;
+$md-grid-list-secondary-font: 12px;
 
-.mat-grid-list {
+md-grid-list {
   display: block;
   position: relative;
 }
 
-.mat-grid-tile {
+md-grid-tile {
   display: block;
   position: absolute;
   overflow: hidden;
 
-  .mat-figure {
+  figure {
     display: flex;
     position: absolute;
 
@@ -40,48 +40,48 @@ $mat-grid-list-secondary-font: 12px;
   }
 
   // Headers & footers
-  .mat-grid-tile-header,
-  .mat-grid-tile-footer {
-    @include mat-line-base($mat-grid-list-secondary-font);
-    @include mat-normalize-text();
+  md-grid-tile-header,
+  md-grid-tile-footer {
+    @include md-line-base($md-grid-list-secondary-font);
+    @include md-normalize-text();
 
     display: flex;
     align-items: center;
-    height: $mat-grid-list-one-line-height;
+    height: $md-grid-list-one-line-height;
     color: #fff;
     background: rgba(0, 0, 0, 0.38);
     overflow: hidden;
-    padding: 0 $mat-grid-list-text-padding;
-    font-size: $mat-grid-list-font-size;
+    padding: 0 $md-grid-list-text-padding;
+    font-size: $md-grid-list-font-size;
 
     // Positioning
     position: absolute;
     left: 0;
     right: 0;
 
-    &.mat-2-line {
-      height: $mat-grid-list-two-line-height;
+    &.md-2-line {
+      height: $md-grid-list-two-line-height;
     }
   }
 
-  .mat-grid-list-text {
-    @include mat-line-wrapper-base();
+  .md-grid-list-text {
+    @include md-line-wrapper-base();
   }
 
-  .mat-grid-tile-header {
+  md-grid-tile-header {
     top: 0;
   }
 
-  .mat-grid-tile-footer {
+  md-grid-tile-footer {
     bottom: 0;
   }
 
-  .mat-grid-avatar {
-    padding-right: $mat-grid-list-text-padding;
+  [md-grid-avatar] {
+    padding-right: $md-grid-list-text-padding;
 
     [dir='rtl'] & {
       padding-right: 0;
-      padding-left: $mat-grid-list-text-padding;
+      padding-left: $md-grid-list-text-padding;
     }
 
     &:empty {

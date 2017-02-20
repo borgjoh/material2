@@ -1,5 +1,5 @@
 import {Component, ElementRef, Input, HostBinding, Renderer} from '@angular/core';
-import {Focusable} from '../core/a11y/focus-key-manager';
+import {Focusable} from '../core/a11y/list-key-manager';
 
 /**
  * This directive is intended to be used inside an md-menu tag.
@@ -10,7 +10,6 @@ import {Focusable} from '../core/a11y/focus-key-manager';
   selector: '[md-menu-item], [mat-menu-item]',
   host: {
     'role': 'menuitem',
-    '[class.mat-menu-item]': 'true',
     '(click)': '_checkDisabled($event)',
     '[attr.tabindex]': '_tabindex'
   },

@@ -6,17 +6,14 @@ import {
   ChangeDetectionStrategy,
   Directive
 } from '@angular/core';
-import {CompatibilityModule} from '../core';
+import {DefaultStyleCompatibilityModeModule} from '../core';
 
 
 /**
  * Content of a card, needed as it's used as a selector in the API.
  */
 @Directive({
-  selector: 'md-card-content, mat-card-content',
-  host: {
-    '[class.mat-card-content]': 'true'
-  }
+  selector: 'md-card-content, mat-card-content'
 })
 export class MdCardContent {}
 
@@ -24,10 +21,7 @@ export class MdCardContent {}
  * Title of a card, needed as it's used as a selector in the API.
  */
 @Directive({
-  selector: 'md-card-title, mat-card-title',
-  host: {
-    '[class.mat-card-title]': 'true'
-  }
+  selector: 'md-card-title, mat-card-title'
 })
 export class MdCardTitle {}
 
@@ -35,10 +29,7 @@ export class MdCardTitle {}
  * Sub-title of a card, needed as it's used as a selector in the API.
  */
 @Directive({
-  selector: 'md-card-subtitle, mat-card-subtitle',
-  host: {
-    '[class.mat-card-subtitle]': 'true'
-  }
+  selector: 'md-card-subtitle, mat-card-subtitle'
 })
 export class MdCardSubtitle {}
 
@@ -46,10 +37,7 @@ export class MdCardSubtitle {}
  * Action section of a card, needed as it's used as a selector in the API.
  */
 @Directive({
-  selector: 'md-card-actions, mat-card-actions',
-  host: {
-    '[class.mat-card-actions]': 'true'
-  }
+  selector: 'md-card-actions, mat-card-actions'
 })
 export class MdCardActions {}
 
@@ -57,78 +45,9 @@ export class MdCardActions {}
  * Footer of a card, needed as it's used as a selector in the API.
  */
 @Directive({
-  selector: 'md-card-footer, mat-card-footer',
-  host: {
-    '[class.mat-card-footer]': 'true'
-  }
+  selector: 'md-card-footer, mat-card-footer'
 })
 export class MdCardFooter {}
-
-/**
- * Image used in a card, needed to add the mat- CSS styling.
- */
-@Directive({
-  selector: '[md-card-sm-image], [mat-card-sm-image]',
-  host: {
-    '[class.mat-card-sm-image]': 'true'
-  }
-})
-export class MdCardSmImage {}
-
-/**
- * Image used in a card, needed to add the mat- CSS styling.
- */
-@Directive({
-  selector: '[md-card-md-image], [mat-card-md-image]',
-  host: {
-    '[class.mat-card-md-image]': 'true'
-  }
-})
-export class MdCardMdImage {}
-
-/**
- * Image used in a card, needed to add the mat- CSS styling.
- */
-@Directive({
-  selector: '[md-card-lg-image], [mat-card-lg-image]',
-  host: {
-    'class.mat-card-lg-image': 'true'
-  }
-})
-export class MdCardLgImage {}
-
-/**
- * Image used in a card, needed to add the mat- CSS styling.
- */
-@Directive({
-  selector: '[md-card-image], [mat-card-image]',
-  host: {
-    '[class.mat-card-image]': 'true'
-  }
-})
-export class MdCardImage {}
-
-/**
- * Large image used in a card, needed to add the mat- CSS styling.
- */
-@Directive({
-  selector: '[md-card-xl-image], [mat-card-xl-image]',
-  host: {
-    '[class.mat-card-xl-image]': 'true'
-  }
-})
-export class MdCardXlImage {}
-
-/**
- * Avatar image used in a card, needed to add the mat- CSS styling.
- */
-@Directive({
-  selector: '[md-card-avatar], [mat-card-avatar]',
-  host: {
-    '[class.mat-card-avatar]': 'true'
-  }
-})
-export class MdCardAvatar {}
 
 
 /**
@@ -149,9 +68,6 @@ export class MdCardAvatar {}
   styleUrls: ['card.css'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    '[class.mat-card]': 'true'
-  }
 })
 export class MdCard {}
 
@@ -166,9 +82,6 @@ export class MdCard {}
   templateUrl: 'card-header.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    '[class.mat-card-header]': 'true'
-  }
 })
 export class MdCardHeader {}
 
@@ -183,15 +96,12 @@ export class MdCardHeader {}
   templateUrl: 'card-title-group.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    '[class.mat-card-title-group]': 'true'
-  }
 })
 export class MdCardTitleGroup {}
 
 
 @NgModule({
-  imports: [CompatibilityModule],
+  imports: [DefaultStyleCompatibilityModeModule],
   exports: [
     MdCard,
     MdCardHeader,
@@ -201,18 +111,11 @@ export class MdCardTitleGroup {}
     MdCardSubtitle,
     MdCardActions,
     MdCardFooter,
-    MdCardSmImage,
-    MdCardMdImage,
-    MdCardLgImage,
-    MdCardImage,
-    MdCardXlImage,
-    MdCardAvatar,
-    CompatibilityModule,
+    DefaultStyleCompatibilityModeModule,
   ],
   declarations: [
     MdCard, MdCardHeader, MdCardTitleGroup, MdCardContent, MdCardTitle, MdCardSubtitle,
-    MdCardActions, MdCardFooter, MdCardSmImage, MdCardMdImage, MdCardLgImage, MdCardImage,
-    MdCardXlImage, MdCardAvatar,
+    MdCardActions, MdCardFooter
   ],
 })
 export class MdCardModule {

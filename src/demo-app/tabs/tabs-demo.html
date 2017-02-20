@@ -18,9 +18,7 @@
 
 <div>
   Selected tab index:
-  <md-input-container>
-    <input mdInput type="number" [(ngModel)]="activeTabIndex">
-  </md-input-container>
+  <md-input type="number" [(ngModel)]="activeTabIndex"></md-input>
 </div>
 
 <div class="demo-dynamic-tabs">
@@ -35,9 +33,7 @@
       </md-checkbox>
       <div>
         Position:
-        <md-input-container>
-          <input mdInput type="number" [(ngModel)]="addTabPosition">
-        </md-input-container>
+        <md-input type="number" [(ngModel)]="addTabPosition"></md-input>
       </div>
       <button md-raised-button color="primary"
               (click)="addTab(createWithLongContent)">
@@ -81,9 +77,7 @@
       </div>
       <br>
       <br>
-      <md-input-container>
-        <input mdInput placeholder="Tab Label" [(ngModel)]="tab.label">
-      </md-input-container>
+      <md-input placeholder="Tab Label" [(ngModel)]="tab.label"></md-input>
       <br><br>
       <button md-raised-button
               [disabled]="dynamicTabs.length == 1"
@@ -209,16 +203,6 @@
 <!-- Simple tabs api -->
 <h1>Tabs with simplified api</h1>
 <md-tab-group class="demo-tab-group">
-  <md-tab label="Earth">
-    This tab is about the Earth!
-  </md-tab>
-  <md-tab label="Fire">
-    This tab is about combustion!
-  </md-tab>
-</md-tab-group>
-
-<h1>Inverted tabs</h1>
-<md-tab-group class="demo-tab-group" headerPosition="below">
   <md-tab label="Earth">
     This tab is about the Earth!
   </md-tab>

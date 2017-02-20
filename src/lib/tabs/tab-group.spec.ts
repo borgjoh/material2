@@ -1,7 +1,7 @@
 import {
     async, fakeAsync, tick, ComponentFixture, TestBed
 } from '@angular/core/testing';
-import {MdTabGroup, MdTabsModule, MdTabHeaderPosition} from './tab-group';
+import {MdTabGroup, MdTabsModule} from './tab-group';
 import {Component, ViewChild} from '@angular/core';
 import {By} from '@angular/platform-browser';
 import {Observable} from 'rxjs/Observable';
@@ -47,12 +47,12 @@ describe('MdTabGroup', () => {
       checkSelectedIndex(0, fixture);
 
       // select the second tab
-      let tabLabel = fixture.debugElement.queryAll(By.css('.mat-tab-label'))[1];
+      let tabLabel = fixture.debugElement.queryAll(By.css('.md-tab-label'))[1];
       tabLabel.nativeElement.click();
       checkSelectedIndex(1, fixture);
 
       // select the third tab
-      tabLabel = fixture.debugElement.queryAll(By.css('.mat-tab-label'))[2];
+      tabLabel = fixture.debugElement.queryAll(By.css('.md-tab-label'))[2];
       tabLabel.nativeElement.click();
       checkSelectedIndex(2, fixture);
     });
@@ -63,7 +63,7 @@ describe('MdTabGroup', () => {
 
       fixture.detectChanges();
 
-      let tabLabel = fixture.debugElement.queryAll(By.css('.mat-tab-label'))[1];
+      let tabLabel = fixture.debugElement.queryAll(By.css('.md-tab-label'))[1];
       tabLabel.nativeElement.click();
 
       fixture.detectChanges();
@@ -200,7 +200,7 @@ describe('MdTabGroup', () => {
     it('should show tabs when they are available', async(() => {
       fixture = TestBed.createComponent(AsyncTabsTestApp);
 
-      let labels = fixture.debugElement.queryAll(By.css('.mat-tab-label'));
+      let labels = fixture.debugElement.queryAll(By.css('.md-tab-label'));
 
       expect(labels.length).toBe(0);
 
@@ -208,7 +208,7 @@ describe('MdTabGroup', () => {
 
       fixture.whenStable().then(() => {
         fixture.detectChanges();
-        labels = fixture.debugElement.queryAll(By.css('.mat-tab-label'));
+        labels = fixture.debugElement.queryAll(By.css('.md-tab-label'));
         expect(labels.length).toBe(2);
       });
     }));
@@ -247,17 +247,6 @@ describe('MdTabGroup', () => {
     it('should support @ViewChild in the tab content', () => {
       expect(fixture.componentInstance.legumes).toBeTruthy();
     });
-
-    it('should support setting the header position', () => {
-      let tabGroupNode = fixture.debugElement.query(By.css('md-tab-group')).nativeElement;
-
-      expect(tabGroupNode.classList).not.toContain('mat-tab-group-inverted-header');
-
-      tabGroup.headerPosition = 'below';
-      fixture.detectChanges();
-
-      expect(tabGroupNode.classList).toContain('mat-tab-group-inverted-header');
-    });
   });
 
   /**
@@ -272,20 +261,20 @@ describe('MdTabGroup', () => {
     expect(tabComponent.selectedIndex).toBe(expectedIndex);
 
     let tabLabelElement = fixture.debugElement
-        .query(By.css(`.mat-tab-label:nth-of-type(${expectedIndex + 1})`)).nativeElement;
-    expect(tabLabelElement.classList.contains('mat-tab-label-active')).toBe(true);
+        .query(By.css(`.md-tab-label:nth-of-type(${expectedIndex + 1})`)).nativeElement;
+    expect(tabLabelElement.classList.contains('md-tab-label-active')).toBe(true);
 
     let tabContentElement = fixture.debugElement
         .query(By.css(`md-tab-body:nth-of-type(${expectedIndex + 1})`)).nativeElement;
-    expect(tabContentElement.classList.contains('mat-tab-body-active')).toBe(true);
+    expect(tabContentElement.classList.contains('md-tab-body-active')).toBe(true);
   }
 
   function getSelectedLabel(fixture: ComponentFixture<any>): HTMLElement {
-    return fixture.nativeElement.querySelector('.mat-tab-label-active');
+    return fixture.nativeElement.querySelector('.md-tab-label-active');
   }
 
   function getSelectedContent(fixture: ComponentFixture<any>): HTMLElement {
-    return fixture.nativeElement.querySelector('.mat-tab-body-active');
+    return fixture.nativeElement.querySelector('.md-tab-body-active');
   }
 });
 
@@ -293,7 +282,6 @@ describe('MdTabGroup', () => {
   template: `
     <md-tab-group class="tab-group"
         [(selectedIndex)]="selectedIndex"
-        [headerPosition]="headerPosition"
         (focusChange)="handleFocus($event)"
         (selectChange)="handleSelection($event)">
       <md-tab>
@@ -315,7 +303,6 @@ class SimpleTabsTestApp {
   selectedIndex: number = 1;
   focusEvent: any;
   selectEvent: any;
-  headerPosition: MdTabHeaderPosition = 'above';
   handleFocus(event: any) {
     this.focusEvent = event;
   }

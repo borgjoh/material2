@@ -2,13 +2,13 @@
 
 
 // Include non-theme styles for core.
-@include mat-core();
+@include md-core();
 
 // Define a theme.
-$primary: mat-palette($mat-indigo);
-$accent:  mat-palette($mat-pink, A200, A100, A400);
+$primary: md-palette($md-indigo);
+$accent:  md-palette($md-pink, A200, A100, A400);
 
-$theme: mat-light-theme($primary, $accent);
+$theme: md-light-theme($primary, $accent);
 
 // Include all theme styles for the components.
 @include angular-material-theme($theme);

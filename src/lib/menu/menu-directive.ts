@@ -17,7 +17,7 @@ import {
 import {MenuPositionX, MenuPositionY} from './menu-positions';
 import {MdMenuInvalidPositionX, MdMenuInvalidPositionY} from './menu-errors';
 import {MdMenuItem} from './menu-item';
-import {FocusKeyManager} from '../core/a11y/focus-key-manager';
+import {ListKeyManager} from '../core/a11y/list-key-manager';
 import {MdMenuPanel} from './menu-panel';
 import {Subscription} from 'rxjs/Subscription';
 import {transformMenu, fadeInItems} from './menu-animations';
@@ -36,7 +36,7 @@ import {transformMenu, fadeInItems} from './menu-animations';
   exportAs: 'mdMenu'
 })
 export class MdMenu implements AfterContentInit, MdMenuPanel, OnDestroy {
-  private _keyManager: FocusKeyManager;
+  private _keyManager: ListKeyManager;
 
   /** Subscription to tab events on the menu panel */
   private _tabSubscription: Subscription;
@@ -52,7 +52,6 @@ export class MdMenu implements AfterContentInit, MdMenuPanel, OnDestroy {
 
   @ViewChild(TemplateRef) templateRef: TemplateRef<any>;
   @ContentChildren(MdMenuItem) items: QueryList<MdMenuItem>;
-  @Input() overlapTrigger = true;
 
   constructor(@Attribute('x-position') posX: MenuPositionX,
               @Attribute('y-position') posY: MenuPositionY) {
@@ -62,7 +61,7 @@ export class MdMenu implements AfterContentInit, MdMenuPanel, OnDestroy {
   }
 
   ngAfterContentInit() {
-    this._keyManager = new FocusKeyManager(this.items).withWrap();
+    this._keyManager = new ListKeyManager(this.items).withFocusWrap();
     this._tabSubscription = this._keyManager.tabOut.subscribe(() => {
       this._emitCloseEvent();
     });
@@ -95,7 +94,7 @@ export class MdMenu implements AfterContentInit, MdMenuPanel, OnDestroy {
    * to focus the first item when the menu is opened by the ENTER key.
    */
   focusFirstItem() {
-    this._keyManager.setFirstItemActive();
+    this._keyManager.focusFirstItem();
   }
 
   /**
@@ -125,10 +124,10 @@ export class MdMenu implements AfterContentInit, MdMenuPanel, OnDestroy {
    * folds out from the correct direction.
    */
   setPositionClasses(posX: MenuPositionX, posY: MenuPositionY): void {
-    this._classList['mat-menu-before'] = posX == 'before';
-    this._classList['mat-menu-after'] = posX == 'after';
-    this._classList['mat-menu-above'] = posY == 'above';
-    this._classList['mat-menu-below'] = posY == 'below';
+    this._classList['md-menu-before'] = posX == 'before';
+    this._classList['md-menu-after'] = posX == 'after';
+    this._classList['md-menu-above'] = posY == 'above';
+    this._classList['md-menu-below'] = posY == 'below';
   }
 
 }

@@ -6,7 +6,7 @@ import {coerceBooleanProperty} from '../core/coercion/boolean-property';
 @Directive({
   selector: '[md-tab-label-wrapper], [mat-tab-label-wrapper]',
   host: {
-    '[class.mat-tab-disabled]': 'disabled'
+    '[class.md-tab-disabled]': 'disabled'
   }
 })
 export class MdTabLabelWrapper {

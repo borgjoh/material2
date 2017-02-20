@@ -3,7 +3,7 @@
   display: flex;
   flex-flow: row wrap;
 
-  .mat-list, .mat-nav-list {
+  md-list, md-nav-list {
     border: 1px solid rgba(0, 0, 0, 0.12);
     width: 350px;
     margin: 20px 20px 0 0;
@@ -13,11 +13,11 @@
     margin-top: 20px;
   }
 
-  .mat-icon {
+  md-icon {
     color: rgba(0, 0, 0, 0.12);
   }
 
-  .mat-list-icon {
+  [md-list-icon] {
     color: white;
     background: rgba(0, 0, 0, 0.3);
   }

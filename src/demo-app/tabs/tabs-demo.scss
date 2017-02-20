@@ -1,7 +1,7 @@
 .demo-nav-bar {
   border: 1px solid #e0e0e0;
   margin-bottom: 40px;
-  .mat-tab-nav-bar {
+  [md-tab-nav-bar] {
     background: #f9f9f9;
   }
   sunny-routed-content,
@@ -15,15 +15,15 @@
 .demo-tab-group {
   border: 1px solid #e0e0e0;
   margin-bottom: 40px;
-  .mat-tab-header {
+  .md-tab-header {
     background: #f9f9f9;
   }
-  .mat-tab-body-content {
+  .md-tab-body-content {
     padding: 12px;
   }
 }
 
-tabs-demo .mat-card {
+tabs-demo md-card {
   width: 160px;
 
 }
@@ -32,22 +32,22 @@ tabs-demo .mat-card {
   display: flex;
   width: 100%;
 
-  .mat-tab-group {
+  md-tab-group {
     min-width: 200px;
     margin-bottom: 0;
     flex-grow: 1;
   }
 
-  .mat-card {
+  md-card {
     min-width: 160px;
     margin-right: 16px;
 
-    .mat-checkbox {
+    md-checkbox {
       display: block;
       margin-top: 8px;
     }
 
-    .mat-input-container {
+    md-input {
       width: 100px;
     }
 

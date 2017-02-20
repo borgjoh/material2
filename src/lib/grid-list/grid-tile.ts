@@ -6,7 +6,7 @@ import {
   Input,
   ContentChildren,
   QueryList,
-  AfterContentInit, Directive
+  AfterContentInit
 } from '@angular/core';
 import {MdLine, MdLineSetter} from '../core';
 import {coerceToNumber} from './grid-list-measure';
@@ -14,10 +14,7 @@ import {coerceToNumber} from './grid-list-measure';
 @Component({
   moduleId: module.id,
   selector: 'md-grid-tile, mat-grid-tile',
-  host: {
-    'role': 'listitem',
-    '[class.mat-grid-tile]': 'true',
-  },
+  host: { 'role': 'listitem' },
   templateUrl: 'grid-tile.html',
   styleUrls: ['grid-list.css'],
   encapsulation: ViewEncapsulation.None,
@@ -45,6 +42,7 @@ export class MdGridTile {
   _setStyle(property: string, value: string): void {
     this._renderer.setElementStyle(this._element.nativeElement, property, value);
   }
+
 }
 
 @Component({
@@ -67,35 +65,3 @@ export class MdGridTileText implements AfterContentInit {
   }
 }
 
-/**
- * Directive whose purpose is to add the mat- CSS styling to this selector.
- */
-@Directive({
-  selector: '[md-grid-avatar], [mat-grid-avatar]',
-  host: {
-    '[class.mat-grid-avatar]': 'true'
-  }
-})
-export class MdGridAvatarCssMatStyler {}
-
-/**
- * Directive whose purpose is to add the mat- CSS styling to this selector.
- */
-@Directive({
-  selector: 'md-grid-tile-header, mat-grid-tile-header',
-  host: {
-    '[class.mat-grid-tile-header]': 'true'
-  }
-})
-export class MdGridTileHeaderCssMatStyler {}
-
-/**
- * Directive whose purpose is to add the mat- CSS styling to this selector.
- */
-@Directive({
-  selector: 'md-grid-tile-footer, mat-grid-tile-footer',
-  host: {
-    '[class.mat-grid-tile-footer]': 'true'
-  }
-})
-export class MdGridTileFooterCssMatStyler {}

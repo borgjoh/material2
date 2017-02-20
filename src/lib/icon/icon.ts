@@ -16,7 +16,7 @@ import {
 } from '@angular/core';
 import {HttpModule, Http} from '@angular/http';
 import {DomSanitizer} from '@angular/platform-browser';
-import {MdError, CompatibilityModule} from '../core';
+import {MdError, DefaultStyleCompatibilityModeModule} from '../core';
 import {MdIconRegistry} from './icon-registry';
 export {MdIconRegistry} from './icon-registry';
 
@@ -67,7 +67,6 @@ export class MdIconInvalidNameError extends MdError {
   styleUrls: ['icon.css'],
   host: {
     'role': 'img',
-    '[class.mat-icon]': 'true',
   },
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -97,7 +96,6 @@ export class MdIcon implements OnChanges, OnInit, AfterViewChecked {
 
   private _previousFontSetClass: string;
   private _previousFontIconClass: string;
-  private _previousAriaLabel: string;
 
   constructor(
       private _elementRef: ElementRef,
@@ -112,7 +110,7 @@ export class MdIcon implements OnChanges, OnInit, AfterViewChecked {
 
   _setElementColor(color: string, isAdd: boolean) {
     if (color != null && color != '') {
-      this._renderer.setElementClass(this._elementRef.nativeElement, `mat-${color}`, isAdd);
+      this._renderer.setElementClass(this._elementRef.nativeElement, `md-${color}`, isAdd);
     }
   }
 
@@ -178,8 +176,7 @@ export class MdIcon implements OnChanges, OnInit, AfterViewChecked {
 
   private _updateAriaLabel() {
       const ariaLabel = this._getAriaLabel();
-      if (ariaLabel && ariaLabel !== this._previousAriaLabel) {
-        this._previousAriaLabel = ariaLabel;
+      if (ariaLabel) {
         this._renderer.setElementAttribute(this._elementRef.nativeElement, 'aria-label', ariaLabel);
       }
   }
@@ -263,8 +260,8 @@ export const ICON_REGISTRY_PROVIDER = {
 };
 
 @NgModule({
-  imports: [HttpModule, CompatibilityModule],
-  exports: [MdIcon, CompatibilityModule],
+  imports: [HttpModule, DefaultStyleCompatibilityModeModule],
+  exports: [MdIcon, DefaultStyleCompatibilityModeModule],
   declarations: [MdIcon],
   providers: [ICON_REGISTRY_PROVIDER],
 })
