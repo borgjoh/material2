@@ -16,7 +16,7 @@ import {
 import {CommonModule} from '@angular/common';
 import {NG_VALUE_ACCESSOR, ControlValueAccessor} from '@angular/forms';
 import {coerceBooleanProperty} from '../core/coercion/boolean-property';
-import {MdRippleModule, DefaultStyleCompatibilityModeModule} from '../core';
+import {MdRippleModule, CompatibilityModule} from '../core';
 
 
 /** Monotonically increasing integer used to auto-generate unique ids for checkbox components. */
@@ -68,11 +68,12 @@ export class MdCheckboxChange {
   templateUrl: 'checkbox.html',
   styleUrls: ['checkbox.css'],
   host: {
-    '[class.md-checkbox-indeterminate]': 'indeterminate',
-    '[class.md-checkbox-checked]': 'checked',
-    '[class.md-checkbox-disabled]': 'disabled',
-    '[class.md-checkbox-label-before]': 'labelPosition == "before"',
-    '[class.md-checkbox-focused]': '_hasFocus',
+    '[class.mat-checkbox]': 'true',
+    '[class.mat-checkbox-indeterminate]': 'indeterminate',
+    '[class.mat-checkbox-checked]': 'checked',
+    '[class.mat-checkbox-disabled]': 'disabled',
+    '[class.mat-checkbox-label-before]': 'labelPosition == "before"',
+    '[class.mat-checkbox-focused]': '_hasFocus',
   },
   providers: [MD_CHECKBOX_CONTROL_VALUE_ACCESSOR],
   encapsulation: ViewEncapsulation.None,
@@ -138,14 +139,17 @@ export class MdCheckbox implements ControlValueAccessor {
   get disabled(): boolean { return this._disabled; }
   set disabled(value) { this._disabled = coerceBooleanProperty(value); }
 
-  /** @docs-private */
-  @Input() tabindex: number = 0;
+  /** Tabindex value that is passed to the underlying input element. */
+  @Input() tabIndex: number = 0;
 
   /** Name value will be applied to the input element if present */
   @Input() name: string = null;
 
   /** Event emitted when the checkbox's `checked` value changes. */
   @Output() change: EventEmitter<MdCheckboxChange> = new EventEmitter<MdCheckboxChange>();
+
+  /** Event emitted when the checkbox's `indeterminate` value changes. */
+  @Output() indeterminateChange: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   /** The native `<input type="checkbox"> element */
   @ViewChild('input') _inputElement: ElementRef;
@@ -186,7 +190,10 @@ export class MdCheckbox implements ControlValueAccessor {
 
   set checked(checked: boolean) {
     if (checked != this.checked) {
-      this._indeterminate = false;
+      if (this._indeterminate) {
+        this._indeterminate = false;
+        this.indeterminateChange.emit(this._indeterminate);
+      }
       this._checked = checked;
       this._transitionCheckState(
           this._checked ? TransitionCheckState.Checked : TransitionCheckState.Unchecked);
@@ -208,12 +215,16 @@ export class MdCheckbox implements ControlValueAccessor {
   }
 
   set indeterminate(indeterminate: boolean) {
+    let changed =  indeterminate != this._indeterminate;
     this._indeterminate = indeterminate;
     if (this._indeterminate) {
       this._transitionCheckState(TransitionCheckState.Indeterminate);
     } else {
       this._transitionCheckState(
           this.checked ? TransitionCheckState.Checked : TransitionCheckState.Unchecked);
+    }
+    if (changed) {
+      this.indeterminateChange.emit(this._indeterminate);
     }
   }
 
@@ -230,7 +241,7 @@ export class MdCheckbox implements ControlValueAccessor {
 
   _setElementColor(color: string, isAdd: boolean) {
     if (color != null && color != '') {
-      this._renderer.setElementClass(this._elementRef.nativeElement, `md-${color}`, isAdd);
+      this._renderer.setElementClass(this._elementRef.nativeElement, `mat-${color}`, isAdd);
     }
   }
 
@@ -383,7 +394,7 @@ export class MdCheckbox implements ControlValueAccessor {
           'indeterminate-checked' : 'indeterminate-unchecked';
     }
 
-    return `md-checkbox-anim-${animSuffix}`;
+    return `mat-checkbox-anim-${animSuffix}`;
   }
 
   _getHostElement() {
@@ -393,8 +404,8 @@ export class MdCheckbox implements ControlValueAccessor {
 
 
 @NgModule({
-  imports: [CommonModule, MdRippleModule, DefaultStyleCompatibilityModeModule],
-  exports: [MdCheckbox, DefaultStyleCompatibilityModeModule],
+  imports: [CommonModule, MdRippleModule, CompatibilityModule],
+  exports: [MdCheckbox, CompatibilityModule],
   declarations: [MdCheckbox],
 })
 export class MdCheckboxModule {

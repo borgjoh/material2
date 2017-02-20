@@ -23,7 +23,7 @@ import {NG_VALUE_ACCESSOR, ControlValueAccessor} from '@angular/forms';
 import {
   MdRippleModule,
   UniqueSelectionDispatcher,
-  DefaultStyleCompatibilityModeModule,
+  CompatibilityModule,
   UNIQUE_SELECTION_DISPATCHER_PROVIDER,
 } from '../core';
 import {coerceBooleanProperty} from '../core/coercion/boolean-property';
@@ -57,6 +57,7 @@ export class MdRadioChange {
   providers: [MD_RADIO_GROUP_CONTROL_VALUE_ACCESSOR],
   host: {
     'role': 'radiogroup',
+    '[class.mat-radio-group]': 'true',
   },
 })
 export class MdRadioGroup implements AfterContentInit, ControlValueAccessor {
@@ -261,11 +262,14 @@ export class MdRadioGroup implements AfterContentInit, ControlValueAccessor {
   selector: 'md-radio-button, mat-radio-button',
   templateUrl: 'radio.html',
   styleUrls: ['radio.css'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  host: {
+    '[class.mat-radio-button]': 'true',
+  }
 })
 export class MdRadioButton implements OnInit {
 
-  @HostBinding('class.md-radio-focused')
+  @HostBinding('class.mat-radio-focused')
   _isFocused: boolean;
 
   /** Whether this radio is checked. */
@@ -336,7 +340,7 @@ export class MdRadioButton implements OnInit {
   }
 
   /** Whether this radio button is checked. */
-  @HostBinding('class.md-radio-checked')
+  @HostBinding('class.mat-radio-checked')
   @Input()
   get checked(): boolean {
     return this._checked;
@@ -411,7 +415,7 @@ export class MdRadioButton implements OnInit {
   }
 
   /** Whether the radio button is disabled. */
-  @HostBinding('class.md-radio-disabled')
+  @HostBinding('class.mat-radio-disabled')
   @Input()
   get disabled(): boolean {
     return this._disabled || (this.radioGroup != null && this.radioGroup.disabled);
@@ -499,16 +503,12 @@ export class MdRadioButton implements OnInit {
       }
     }
   }
-
-  _getHostElement() {
-    return this._elementRef.nativeElement;
-  }
 }
 
 
 @NgModule({
-  imports: [CommonModule, MdRippleModule, DefaultStyleCompatibilityModeModule],
-  exports: [MdRadioGroup, MdRadioButton, DefaultStyleCompatibilityModeModule],
+  imports: [CommonModule, MdRippleModule, CompatibilityModule],
+  exports: [MdRadioGroup, MdRadioButton, CompatibilityModule],
   providers: [UNIQUE_SELECTION_DISPATCHER_PROVIDER, VIEWPORT_RULER_PROVIDER],
   declarations: [MdRadioGroup, MdRadioButton],
 })

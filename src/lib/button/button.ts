@@ -7,25 +7,87 @@ import {
   ElementRef,
   Renderer,
   NgModule,
-  ModuleWithProviders,
+  ModuleWithProviders, Directive,
 } from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {MdRippleModule, coerceBooleanProperty, DefaultStyleCompatibilityModeModule} from '../core';
+import {MdRippleModule, coerceBooleanProperty, CompatibilityModule} from '../core';
 
 
 // TODO(jelbourn): Make the `isMouseDown` stuff done with one global listener.
 // TODO(kara): Convert attribute selectors to classes when attr maps become available
+
+
+/**
+ * Directive whose purpose is to add the mat- CSS styling to this selector.
+ */
+@Directive({
+  selector: 'button[md-button], button[mat-button], a[md-button], a[mat-button]',
+  host: {
+    '[class.mat-button]': 'true'
+  }
+})
+export class MdButtonCssMatStyler {}
+
+/**
+ * Directive whose purpose is to add the mat- CSS styling to this selector.
+ */
+@Directive({
+  selector:
+      'button[md-raised-button], button[mat-raised-button], ' +
+      'a[md-raised-button], a[mat-raised-button]',
+  host: {
+    '[class.mat-raised-button]': 'true'
+  }
+})
+export class MdRaisedButtonCssMatStyler {}
+
+/**
+ * Directive whose purpose is to add the mat- CSS styling to this selector.
+ */
+@Directive({
+  selector:
+      'button[md-icon-button], button[mat-icon-button], a[md-icon-button], a[mat-icon-button]',
+  host: {
+    '[class.mat-icon-button]': 'true',
+  }
+})
+export class MdIconButtonCssMatStyler {}
+
+/**
+ * Directive whose purpose is to add the mat- CSS styling to this selector.
+ */
+@Directive({
+  selector: 'button[md-fab], button[mat-fab], a[md-fab], a[mat-fab]',
+  host: {
+    '[class.mat-fab]': 'true'
+  }
+})
+export class MdFabCssMatStyler {}
+
+/**
+ * Directive whose purpose is to add the mat- CSS styling to this selector.
+ */
+@Directive({
+  selector: 'button[md-mini-fab], button[mat-mini-fab], a[md-mini-fab], a[mat-mini-fab]',
+  host: {
+    '[class.mat-mini-fab]': 'true'
+  }
+})
+export class MdMiniFabCssMatStyler {}
+
 
 /**
  * Material design button.
  */
 @Component({
   moduleId: module.id,
-  selector: 'button[md-button], button[md-raised-button], button[md-icon-button], ' +
-            'button[md-fab], button[md-mini-fab]',
+  selector: 'button[md-button], button[md-raised-button], button[md-icon-button],' +
+            'button[md-fab], button[md-mini-fab],' +
+            'button[mat-button], button[mat-raised-button], button[mat-icon-button],' +
+            'button[mat-fab], button[mat-mini-fab]',
   host: {
     '[disabled]': 'disabled',
-    '[class.md-button-focus]': '_isKeyboardFocused',
+    '[class.mat-button-focus]': '_isKeyboardFocused',
     '(mousedown)': '_setMousedown()',
     '(focus)': '_setKeyboardFocus()',
     '(blur)': '_removeKeyboardFocus()',
@@ -82,7 +144,7 @@ export class MdButton {
 
   _setElementColor(color: string, isAdd: boolean) {
     if (color != null && color != '') {
-      this._renderer.setElementClass(this._elementRef.nativeElement, `md-${color}`, isAdd);
+      this._renderer.setElementClass(this._getHostElement(), `mat-${color}`, isAdd);
     }
   }
 
@@ -96,7 +158,7 @@ export class MdButton {
 
   /** Focuses the button. */
   focus(): void {
-    this._renderer.invokeElementMethod(this._elementRef.nativeElement, 'focus');
+    this._renderer.invokeElementMethod(this._getHostElement(), 'focus');
   }
 
   _getHostElement() {
@@ -104,7 +166,7 @@ export class MdButton {
   }
 
   _isRoundButton() {
-    const el = this._elementRef.nativeElement;
+    const el = this._getHostElement();
     return el.hasAttribute('md-icon-button') ||
         el.hasAttribute('md-fab') ||
         el.hasAttribute('md-mini-fab');
@@ -120,12 +182,12 @@ export class MdButton {
  */
 @Component({
   moduleId: module.id,
-  selector: 'a[md-button], a[md-raised-button], a[md-icon-button], a[md-fab], a[md-mini-fab]',
-  inputs: ['color', 'disabled', 'disableRipple'],
+  selector: `a[md-button], a[md-raised-button], a[md-icon-button], a[md-fab], a[md-mini-fab],
+             a[mat-button], a[mat-raised-button], a[mat-icon-button], a[mat-fab], a[mat-mini-fab]`,
   host: {
     '[attr.disabled]': 'disabled',
     '[attr.aria-disabled]': '_isAriaDisabled',
-    '[class.md-button-focus]': '_isKeyboardFocused',
+    '[class.mat-button-focus]': '_isKeyboardFocused',
     '(mousedown)': '_setMousedown()',
     '(focus)': '_setKeyboardFocus()',
     '(blur)': '_removeKeyboardFocus()',
@@ -161,9 +223,25 @@ export class MdAnchor extends MdButton {
 
 
 @NgModule({
-  imports: [CommonModule, MdRippleModule, DefaultStyleCompatibilityModeModule],
-  exports: [MdButton, MdAnchor, DefaultStyleCompatibilityModeModule],
-  declarations: [MdButton, MdAnchor],
+  imports: [CommonModule, MdRippleModule, CompatibilityModule],
+  exports: [
+    MdButton, MdAnchor,
+    CompatibilityModule,
+    MdButtonCssMatStyler,
+    MdRaisedButtonCssMatStyler,
+    MdIconButtonCssMatStyler,
+    MdFabCssMatStyler,
+    MdMiniFabCssMatStyler
+  ],
+  declarations: [
+    MdButton,
+    MdAnchor,
+    MdButtonCssMatStyler,
+    MdRaisedButtonCssMatStyler,
+    MdIconButtonCssMatStyler,
+    MdFabCssMatStyler,
+    MdMiniFabCssMatStyler
+  ],
 })
 export class MdButtonModule {
   /** @deprecated */

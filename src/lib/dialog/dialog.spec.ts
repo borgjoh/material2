@@ -7,13 +7,20 @@ import {
   TestBed,
   tick,
 } from '@angular/core/testing';
-import {By} from '@angular/platform-browser';
-import {NgModule, Component, Directive, ViewChild, ViewContainerRef} from '@angular/core';
+import {NgModule,
+  Component,
+  Directive,
+  ViewChild,
+  ViewContainerRef,
+  Injector,
+  Inject,
+} from '@angular/core';
 import {MdDialogModule} from './index';
 import {MdDialog} from './dialog';
 import {OverlayContainer} from '../core';
 import {MdDialogRef} from './dialog-ref';
-import {MdDialogContainer} from './dialog-container';
+import {MD_DIALOG_DATA} from './dialog-injector';
+import {ESCAPE} from '../core/keyboard/keycodes';
 
 
 describe('MdDialog', () => {
@@ -62,6 +69,21 @@ describe('MdDialog', () => {
     viewContainerFixture.detectChanges();
     let dialogContainerElement = overlayContainerElement.querySelector('md-dialog-container');
     expect(dialogContainerElement.getAttribute('role')).toBe('dialog');
+  });
+
+  it('should use injector from viewContainerRef for DialogInjector', () => {
+    let dialogRef = dialog.open(PizzaMsg, {
+      viewContainerRef: testViewContainerRef
+    });
+
+    viewContainerFixture.detectChanges();
+
+    let dialogInjector = dialogRef.componentInstance.dialogInjector;
+
+    expect(dialogRef.componentInstance.dialogRef).toBe(dialogRef);
+    expect(dialogInjector.get(DirectiveWithViewContainer)).toBeTruthy(
+      'Expected the dialog component to be created with the injector from the viewContainerRef.'
+    );
   });
 
   it('should open a dialog with a component and no ViewContainerRef', () => {
@@ -113,11 +135,7 @@ describe('MdDialog', () => {
 
     viewContainerFixture.detectChanges();
 
-    let dialogContainer: MdDialogContainer =
-        viewContainerFixture.debugElement.query(By.directive(MdDialogContainer)).componentInstance;
-
-    // Fake the user pressing the escape key by calling the handler directly.
-    dialogContainer.handleEscapeKey();
+    dispatchKeydownEvent(document, ESCAPE);
 
     expect(overlayContainerElement.querySelector('md-dialog-container')).toBeNull();
   });
@@ -133,6 +151,35 @@ describe('MdDialog', () => {
     backdrop.click();
 
     expect(overlayContainerElement.querySelector('md-dialog-container')).toBeFalsy();
+  });
+
+  it('should notify the observers if a dialog has been opened', () => {
+    let ref: MdDialogRef<PizzaMsg>;
+    dialog.afterOpen.subscribe(r => {
+      ref = r;
+    });
+    expect(dialog.open(PizzaMsg, {
+      viewContainerRef: testViewContainerRef
+    })).toBe(ref);
+  });
+
+  it('should notify the observers if all open dialogs have finished closing', () => {
+    const ref1 = dialog.open(PizzaMsg, {
+      viewContainerRef: testViewContainerRef
+    });
+    const ref2 = dialog.open(ContentElementDialog, {
+      viewContainerRef: testViewContainerRef
+    });
+    let allClosed = false;
+
+    dialog.afterAllClosed.subscribe(() => {
+      allClosed = true;
+    });
+
+    ref1.close();
+    expect(allClosed).toBeFalsy();
+    ref2.close();
+    expect(allClosed).toBeTruthy();
   });
 
   it('should should override the width of the overlay pane', () => {
@@ -227,6 +274,28 @@ describe('MdDialog', () => {
     expect(overlayContainerElement.querySelectorAll('md-dialog-container').length).toBe(0);
   });
 
+  describe('passing in data', () => {
+    it('should be able to pass in data', () => {
+      let config = {
+        data: {
+          stringParam: 'hello',
+          dateParam: new Date()
+        }
+      };
+
+      let instance = dialog.open(DialogWithInjectedData, config).componentInstance;
+
+      expect(instance.data.stringParam).toBe(config.data.stringParam);
+      expect(instance.data.dateParam).toBe(config.data.dateParam);
+    });
+
+    it('should throw if injected data is expected but none is passed', () => {
+      expect(() => {
+        dialog.open(DialogWithInjectedData);
+      }).toThrow();
+    });
+  });
+
   describe('disableClose option', () => {
     it('should prevent closing via clicks on the backdrop', () => {
       dialog.open(PizzaMsg, {
@@ -250,11 +319,7 @@ describe('MdDialog', () => {
 
       viewContainerFixture.detectChanges();
 
-      let dialogContainer: MdDialogContainer = viewContainerFixture.debugElement.query(
-          By.directive(MdDialogContainer)).componentInstance;
-
-      // Fake the user pressing the escape key by calling the handler directly.
-      dialogContainer.handleEscapeKey();
+      dispatchKeydownEvent(document, ESCAPE);
 
       expect(overlayContainerElement.querySelector('md-dialog-container')).toBeTruthy();
     });
@@ -307,6 +372,8 @@ describe('MdDialog', () => {
 
       expect(document.activeElement.id)
           .toBe('dialog-trigger', 'Expected that the trigger was refocused after dialog close');
+
+      document.body.removeChild(button);
     }));
   });
 
@@ -319,19 +386,19 @@ describe('MdDialog', () => {
     });
 
     it('should close the dialog when clicking on the close button', () => {
-      expect(overlayContainerElement.querySelectorAll('.md-dialog-container').length).toBe(1);
+      expect(overlayContainerElement.querySelectorAll('.mat-dialog-container').length).toBe(1);
 
       (overlayContainerElement.querySelector('button[md-dialog-close]') as HTMLElement).click();
 
-      expect(overlayContainerElement.querySelectorAll('.md-dialog-container').length).toBe(0);
+      expect(overlayContainerElement.querySelectorAll('.mat-dialog-container').length).toBe(0);
     });
 
     it('should not close the dialog if [md-dialog-close] is applied on a non-button node', () => {
-      expect(overlayContainerElement.querySelectorAll('.md-dialog-container').length).toBe(1);
+      expect(overlayContainerElement.querySelectorAll('.mat-dialog-container').length).toBe(1);
 
       (overlayContainerElement.querySelector('div[md-dialog-close]') as HTMLElement).click();
 
-      expect(overlayContainerElement.querySelectorAll('.md-dialog-container').length).toBe(1);
+      expect(overlayContainerElement.querySelectorAll('.mat-dialog-container').length).toBe(1);
     });
 
     it('should allow for a user-specified aria-label on the close button', () => {
@@ -341,6 +408,12 @@ describe('MdDialog', () => {
       viewContainerFixture.detectChanges();
 
       expect(button.getAttribute('aria-label')).toBe('Best close button ever');
+    });
+
+    it('should override the "type" attribute of the close button', () => {
+      let button = overlayContainerElement.querySelector('button[md-dialog-close]');
+
+      expect(button.getAttribute('type')).toBe('button');
     });
 
   });
@@ -429,7 +502,8 @@ class ComponentWithChildViewContainer {
 /** Simple component for testing ComponentPortal. */
 @Component({template: '<p>Pizza</p> <input> <button>Close</button>'})
 class PizzaMsg {
-  constructor(public dialogRef: MdDialogRef<PizzaMsg>) { }
+  constructor(public dialogRef: MdDialogRef<PizzaMsg>,
+              public dialogInjector: Injector) {}
 }
 
 @Component({
@@ -454,19 +528,43 @@ class ComponentThatProvidesMdDialog {
   constructor(public dialog: MdDialog) {}
 }
 
+/** Simple component for testing ComponentPortal. */
+@Component({template: ''})
+class DialogWithInjectedData {
+  constructor(@Inject(MD_DIALOG_DATA) public data: any) { }
+}
+
 // Create a real (non-test) NgModule as a workaround for
 // https://github.com/angular/angular/issues/10760
 const TEST_DIRECTIVES = [
   ComponentWithChildViewContainer,
   PizzaMsg,
   DirectiveWithViewContainer,
-  ContentElementDialog
+  ContentElementDialog,
+  DialogWithInjectedData
 ];
 
 @NgModule({
   imports: [MdDialogModule],
   exports: TEST_DIRECTIVES,
   declarations: TEST_DIRECTIVES,
-  entryComponents: [ComponentWithChildViewContainer, PizzaMsg, ContentElementDialog],
+  entryComponents: [
+    ComponentWithChildViewContainer,
+    PizzaMsg,
+    ContentElementDialog,
+    DialogWithInjectedData
+  ],
 })
 class DialogTestModule { }
+
+
+// TODO(crisbeto): switch to using function from common testing utils once #2943 is merged.
+function dispatchKeydownEvent(element: Node, keyCode: number) {
+  let event: any = document.createEvent('KeyboardEvent');
+  (event.initKeyEvent || event.initKeyboardEvent).bind(event)(
+      'keydown', true, true, window, 0, 0, 0, 0, 0, keyCode);
+  Object.defineProperty(event, 'keyCode', {
+    get: function() { return keyCode; }
+  });
+  element.dispatchEvent(event);
+}
